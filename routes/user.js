@@ -8,38 +8,38 @@ const passport = require("passport");
 const { OIDCStrategy } = require("passport-azure-ad");
 require("dotenv").config();
 
-passport.use(new OIDCStrategy({
-  identityMetadata: `https://login.microsoftonline.com/${process.env.AZURE_TENANT_ID}/v2.0/.well-known/openid-configuration`,
-  clientID: process.env.AZURE_CLIENT_ID,
-  clientSecret: process.env.AZURE_CLIENT_SECRET,
-  redirectUrl: "http://localhost:3003/auth/azure/callback",
-  responseType: "code id_token",
-  responseMode: "query",
-  scope: ["profile", "offline_access"],
-  passReqToCallback: true
-}, async (req, iss, sub, profile, accessToken, refreshToken, done) => {
-  try {
-    let user = await User.findOne({ email: profile.upn }).exec();
+// passport.use(new OIDCStrategy({
+//   identityMetadata: `https://login.microsoftonline.com/${process.env.AZURE_TENANT_ID}/v2.0/.well-known/openid-configuration`,
+//   clientID: process.env.AZURE_CLIENT_ID,
+//   clientSecret: process.env.AZURE_CLIENT_SECRET,
+//   redirectUrl: "http://localhost:3003/auth/azure/callback",
+//   responseType: "code id_token",
+//   responseMode: "query",
+//   scope: ["profile", "offline_access"],
+//   passReqToCallback: true
+// }, async (req, iss, sub, profile, accessToken, refreshToken, done) => {
+//   try {
+//     let user = await User.findOne({ email: profile.upn }).exec();
 
-    if (!user) {
-      user = await User.create({
-        username: profile.given_name,
-        email: profile.upn,
-        password: await bcrypt.hash(Math.random().toString(36).slice(-8), 10), // Random password for new users
-      });
-    }
+//     if (!user) {
+//       user = await User.create({
+//         username: profile.given_name,
+//         email: profile.upn,
+//         password: await bcrypt.hash(Math.random().toString(36).slice(-8), 10), // Random password for new users
+//       });
+//     }
 
-    return done(null, user);
-  } catch (error) {
-    return done(error, null);
-  }
-}));
+//     return done(null, user);
+//   } catch (error) {
+//     return done(error, null);
+//   }
+// }));
 
-router.get("/auth/azure", passport.authenticate("AzureAD", { failureRedirect: "http:localhost:3003/" }));
-router.get("/auth/azure/callback", passport.authenticate("AzureAD", { failureRedirect: "http:localhost:3003/" }), (req, res) => {
-  const token = jwt.sign({ id: req.user._id, role: req.user.role }, process.env.JWT, { expiresIn: '1h' });
-  res.json({ user: req.user, token: token }); // Send user and token to frontend
-});
+// router.get("/auth/azure", passport.authenticate("AzureAD", { failureRedirect: "http:localhost:3003/" }));
+// router.get("/auth/azure/callback", passport.authenticate("AzureAD", { failureRedirect: "http:localhost:3003/" }), (req, res) => {
+//   const token = jwt.sign({ id: req.user._id, role: req.user.role }, process.env.JWT, { expiresIn: '1h' });
+//   res.json({ user: req.user, token: token }); // Send user and token to frontend
+// });
 
 // checked
 router.post("/register", async (req, res) => {
