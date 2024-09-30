@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
+const port = process.env.PORT || 8080;
 
 const mongoose = require("mongoose");
 
@@ -40,6 +41,6 @@ app.use("/admin", adminRoutes);
 app.use("/prod", product);
 app.use("/global", global);
 
-app.listen(3003, () => {
+app.listen(port, () => {
   console.log("Server started on port 3003");
 });
