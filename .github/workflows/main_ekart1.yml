@@ -68,4 +68,12 @@ jobs:
           app-name: 'Ekart1'
           slot-name: 'Production'
           package: .
+
+      - name: Start Node.js app with npm
+        run: |
+          ls
+          pwd
+          tree
+          echo "Starting Node.js app with npm start"
+          npm start
           
