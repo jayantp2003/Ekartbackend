@@ -42,5 +42,5 @@ app.use("/prod", product);
 app.use("/global", global);
 
 app.listen(port, () => {
-  console.log("Server started on port 3003");
+  console.log("Server started on port 8080");
 });
