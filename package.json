@@ -18,7 +18,7 @@
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.9.0",
-    "mongoose": "^8.6.3",
+    "mongoose": "^8.8.3",
     "passport": "^0.7.0",
     "passport-azure-ad": "^4.3.5",
     "stripe": "^16.12.0"
